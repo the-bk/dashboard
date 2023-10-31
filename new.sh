@@ -2,9 +2,9 @@
 export LC_ALL=C.UTF-8
 
 # Set your TeamCity server URL and authentication credentials
-TEAMCITY_URL="http://localhost:8111"
-USERNAME="bk"
-PASSWORD="Abhijeet@7257"
+TEAMCITY_URL="%TEAMCITY_URL%"
+USERNAME="%USERNAME%"
+PASSWORD="%PASSWORD%"
 OUTPUT_HTML="output.html"
 
 PROJECT_IDS=$(curl -s -u $USERNAME:$PASSWORD "$TEAMCITY_URL/httpAuth/app/rest/projects" | grep -o 'id="[^"]*' | awk -F'"' '{print $2}')
