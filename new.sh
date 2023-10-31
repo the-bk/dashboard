@@ -1,6 +1,6 @@
 #!/bin/bash
 export LC_ALL=C.UTF-8
-
+echo "Started"
 # Set your TeamCity server URL and authentication credentials
 TEAMCITY_URL="%TEAMCITY_URL%"
 USERNAME="%USERNAME%"
@@ -87,3 +87,5 @@ done
 
 echo "</body>
 </html>" >> $OUTPUT_HTML
+echo "Finish"
+cat $OUTPUT_HTML
