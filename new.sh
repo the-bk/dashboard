@@ -7,10 +7,10 @@ TRIGGERED_BY="${TEAMCITY_BUILD_TRIGGEREDBY_USERNAME}"
 AUTH_PASSWORD="${TEAMCITY_SYSTEM_TEAMCITY_AUTH_PASSWORD}"
 OUTPUT_HTML="output.html"
 echo "Username is $TRIGGERED_BY"
-echo "Team city URL is $SERVER_URLL"
+echo "Team city URL is $SERVER_URL"
 echo "Password is $AUTH_PASSWORD"
-PROJECT_IDS=$(curl -s -u $TRIGGERED_BY:$AUTH_PASSWORD "$SERVER_URLL/httpAuth/app/rest/projects" | grep -o 'id="[^"]*' | awk -F'"' '{print $2}')
-echo "Project IDS are $PROJECT_IDS"
+PROJECT_IDS=$(curl -s -u $TRIGGERED_BY:$AUTH_PASSWORD "$SERVER_URL/httpAuth/app/rest/projects" | grep -o 'id="[^"]*' | awk -F'"' '{print $2}')
+
 echo "<html>
 <head>
     <title>TeamCity Build Status</title>
@@ -43,22 +43,22 @@ echo "<html>
 
 for PROJECT_ID in $PROJECT_IDS; do
     if [[ "$PROJECT_ID" != "_Root" && "$PROJECT_ID" != "Dashboard" ]]; then
-        PROJECT_URL="$SERVER_URLL/project/$PROJECT_ID?projectTab=projectBuildChains"
-        PROJECT_NAME=$(curl -s -u $TRIGGERED_BY:$AUTH_PASSWORD "$SERVER_URLL/httpAuth/app/rest/projects/id:$PROJECT_ID" | grep -oP '<project id="[^"]*" name="\K[^"]*')
+        PROJECT_URL="$SERVER_URL/project/$PROJECT_ID?projectTab=projectBuildChains"
+        PROJECT_NAME=$(curl -s -u $TRIGGERED_BY:$AUTH_PASSWORD "$SERVER_URL/httpAuth/app/rest/projects/id:$PROJECT_ID" | grep -oP '<project id="[^"]*" name="\K[^"]*')
         echo "<h2>Project Name: $PROJECT_NAME <a href=\"$PROJECT_URL\"><button>Go to Project</button></a></h2>" >> $OUTPUT_HTML
         echo "<table>
                 <tr>
                 </tr>" >> $OUTPUT_HTML
         
-        BUILD_STEPS=$(curl -s -u $TRIGGERED_BY:$AUTH_PASSWORD "$SERVER_URLL/httpAuth/app/rest/buildTypes?locator=project:(id:$PROJECT_ID)" | grep -o 'id="[^"]*' | awk -F'"' '{print $2}' | awk -F '_' '{print $2}')
+        BUILD_STEPS=$(curl -s -u $TRIGGERED_BY:$AUTH_PASSWORD "$SERVER_URL/httpAuth/app/rest/buildTypes?locator=project:(id:$PROJECT_ID)" | grep -o 'id="[^"]*' | awk -F'"' '{print $2}' | awk -F '_' '{print $2}')
         
         BUILD_STEP_ROW=""
         STATUS_ROW=""
         LAST_RUN_ROW=""
 
         for BUILD_STEP in $BUILD_STEPS; do
-            STATUS=$(curl -s -u $TRIGGERED_BY:$AUTH_PASSWORD "$SERVER_URLL/httpAuth/app/rest/buildTypes/$PROJECT_ID"_"$BUILD_STEP/builds?locator=running:any,branch:default:any,canceled:any,pinned:any,lookupLimit:1" | awk '{ print $11 }' | awk -F'"' '{print $2}')
-            LAST_RUN=$(curl -s -u $TRIGGERED_BY:$AUTH_PASSWORD "$SERVER_URLL/httpAuth/app/rest/buildTypes/$PROJECT_ID"_"$BUILD_STEP/builds?locator=running:any,branch:default:any,canceled:any,pinned:any,lookupLimit:1" | grep -oP '<finishOnAgentDate>\K[^<]+' | awk '{print substr($1,1,4) "-" substr($1,5,2) "-" substr($1,7,2) " " substr($1,10,2) ":" substr($1,12,2) ":" substr($1,14,2)}')
+            STATUS=$(curl -s -u $TRIGGERED_BY:$AUTH_PASSWORD "$SERVER_URL/httpAuth/app/rest/buildTypes/$PROJECT_ID"_"$BUILD_STEP/builds?locator=running:any,branch:default:any,canceled:any,pinned:any,lookupLimit:1" | awk '{ print $11 }' | awk -F'"' '{print $2}')
+            LAST_RUN=$(curl -s -u $TRIGGERED_BY:$AUTH_PASSWORD "$SERVER_URL/httpAuth/app/rest/buildTypes/$PROJECT_ID"_"$BUILD_STEP/builds?locator=running:any,branch:default:any,canceled:any,pinned:any,lookupLimit:1" | grep -oP '<finishOnAgentDate>\K[^<]+' | awk '{print substr($1,1,4) "-" substr($1,5,2) "-" substr($1,7,2) " " substr($1,10,2) ":" substr($1,12,2) ":" substr($1,14,2)}')
 
             STATUS_CLASS=""
             if [ "$STATUS" == "SUCCESS" ]; then
