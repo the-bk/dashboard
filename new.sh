@@ -1,6 +1,7 @@
 #!/bin/bash
 export LC_ALL=C.UTF-8
 echo "Started"
+env
 # Set your TeamCity server URL and authentication credentials
 SERVER_URL=$env teamcity_serverUrl
 TRIGGERED_BY=$env teamcity_build_triggeredBy_username
