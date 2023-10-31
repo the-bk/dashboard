@@ -2,9 +2,9 @@
 export LC_ALL=C.UTF-8
 echo "Started"
 # Set your TeamCity server URL and authentication credentials
-TEAMCITY_URL="%TEAMCITY_URL%"
-USERNAME="%USERNAME%"
-PASSWORD="%PASSWORD%"
+TEAMCITY_URL="${TEAMCITY_MY_PARAMTEAMCITY_URL%}"
+USERNAME="${USERNAME}"
+PASSWORD="${PASSWORD}"
 OUTPUT_HTML="output.html"
 echo $USERNAME
 echo $TEAMCITY_URL
