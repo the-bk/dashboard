@@ -6,9 +6,9 @@ TEAMCITY_URL="${TEAMCITY_URL}"
 USERNAME="${USERNAME}"
 PASSWORD="${PASSWORD}"
 OUTPUT_HTML="output.html"
-echo $USERNAME
-echo $TEAMCITY_URL
-echo $PASSWORD
+echo "Username is $USERNAME"
+echo "Team city URL is $TEAMCITY_URL"
+echo "Password is $PASSWORD"
 PROJECT_IDS=$(curl -s -u $USERNAME:$PASSWORD "$TEAMCITY_URL/httpAuth/app/rest/projects" | grep -o 'id="[^"]*' | awk -F'"' '{print $2}')
 
 echo "<html>
