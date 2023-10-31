@@ -2,9 +2,9 @@
 export LC_ALL=C.UTF-8
 echo "Started"
 # Set your TeamCity server URL and authentication credentials
-SERVER_URL=$teamcity_serverUrl
-TRIGGERED_BY=$teamcity_build_triggeredBy_username
-AUTH_PASSWORD=$system_teamcity_auth_password
+SERVER_URL=$env teamcity_serverUrl
+TRIGGERED_BY=$env teamcity_build_triggeredBy_username
+AUTH_PASSWORD=$env system_teamcity_auth_password
 OUTPUT_HTML="output.html"
 echo "Username is $TRIGGERED_BY"
 echo "Team city URL is $SERVER_URL"
