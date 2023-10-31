@@ -10,7 +10,7 @@ echo "Username is $TRIGGERED_BY"
 echo "Team city URL is $SERVER_URLL"
 echo "Password is $AUTH_PASSWORD"
 PROJECT_IDS=$(curl -s -u $TRIGGERED_BY:$AUTH_PASSWORD "$SERVER_URLL/httpAuth/app/rest/projects" | grep -o 'id="[^"]*' | awk -F'"' '{print $2}')
-
+echo "Project IDS are $PROJECT_IDS"
 echo "<html>
 <head>
     <title>TeamCity Build Status</title>
