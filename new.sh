@@ -34,7 +34,7 @@ for PROJECT_ID in $PROJECT_IDS; do
     if [[ "$PROJECT_ID" != "_Root" && "$PROJECT_ID" != "Dashboard" ]]; then
         PROJECT_URL="$SERVER_URL/project/$PROJECT_ID?projectTab=projectBuildChains"
         PROJECT_NAME=$(curl -s -u $TRIGGERED_BY:$AUTH_PASSWORD "$SERVER_URL/httpAuth/app/rest/projects/id:$PROJECT_ID" | grep -oP '<project id="[^"]*" name="\K[^"]*')
-        echo "<h2>Project Name: $PROJECT_NAME <a href=\"$PROJECT_URL\"><button>Go to Project</button></a></h2>" >> $OUTPUT_HTML
+        echo "<h2>Project Name: $PROJECT_NAME <a href=\"$PROJECT_URL\" target=\"_blank\"><button>Go to Project</button></a></h2>" >> $OUTPUT_HTML
         echo "<table>
                 <tr>
                 </tr>" >> $OUTPUT_HTML        
